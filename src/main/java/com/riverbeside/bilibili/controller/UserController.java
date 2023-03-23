@@ -72,8 +72,8 @@ public class UserController extends BaseController{
         session.setAttribute("uid",user.getUid());
 
         //获取session中绑定的数据
-        System.out.println(getUidFromSession(session));
-        System.out.println(getUsernameFromSession(session));
+        getUidFromSession(session);
+        getUsernameFromSession(session);
 
         return new JsonResult<User>(OK,user);
     }

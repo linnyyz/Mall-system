@@ -24,6 +24,11 @@ public class ProductMapperTest {
     public void findHotTest() {
         System.out.println(productMapper.findHotProducts());;
     }
+    @Test
+    public void reduceProductTest() {
+        System.out.println(productMapper.reduceProduct(10000001,2));;
+    }
+
 
 
 }

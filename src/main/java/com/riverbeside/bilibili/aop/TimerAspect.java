@@ -22,7 +22,7 @@ public class TimerAspect {
         //先记录当前时间
         long start = System.currentTimeMillis();
         Object result = pjp.proceed(); //调用目标方法: login
-        System.out.println(result);
+//        System.out.println(result);
         //后调用当前时间
         long end = System.currentTimeMillis();
         System.out.println("耗时:" + (end - start));

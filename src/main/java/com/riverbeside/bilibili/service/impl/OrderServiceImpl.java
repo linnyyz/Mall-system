@@ -8,10 +8,12 @@ import com.riverbeside.bilibili.mapper.OrderMapper;
 import com.riverbeside.bilibili.service.IAddressService;
 import com.riverbeside.bilibili.service.ICartService;
 import com.riverbeside.bilibili.service.IOrderService;
+import com.riverbeside.bilibili.service.IProductService;
 import com.riverbeside.bilibili.service.ex.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     ICartService cartService;
 
+    @Autowired
+    IProductService productService;
+
     @Override
     public Order createOrder(Integer uid, Integer aid, String username, Integer[] cids) {
 
@@ -37,8 +42,9 @@ public class OrderServiceImpl implements IOrderService {
         //创建订单详细项,计算商品总价
         for (CartVO cartVO : carts) {
             totalPrice += (cartVO.getRealPrice() * cartVO.getNum());
-
+            productService.reduceProduct(cartVO.getPid(), cartVO.getNum());
         }
+
 
         Address address = addressService.findByAid(uid, aid);
 

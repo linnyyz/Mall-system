@@ -29,11 +29,11 @@ public class ProductServiceImpl implements IProductService {
 
         List<Product> hotList = productMapper.findHotProducts();
 
-        if (hotList==null){
+        if (hotList == null) {
             throw new ProductNotFoundException("商品获取失败!");
         }
 
-        for(Product p:hotList){
+        for (Product p : hotList) {
             p.setId(null);
             p.setCategoryId(null);
             p.setCreatedTime(null);
@@ -45,6 +45,14 @@ public class ProductServiceImpl implements IProductService {
         return hotList;
     }
 
+    @Override
+    public void reduceProduct(Integer pid, Integer num) {
+        try {
+            productMapper.reduceProduct(pid, num);
+        } catch (UpdateException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

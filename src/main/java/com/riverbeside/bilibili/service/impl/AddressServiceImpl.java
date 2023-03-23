@@ -21,29 +21,32 @@ public class AddressServiceImpl implements IAddressService {
 
     @Override
     public void addAddress(Integer uid, String username, Address address) {
-        //调用收货地址的统计数量
-        Integer counts = addressMapper.countAddressByUid(address.getUid());
+        Integer counts = 0;
+        synchronized (counts) {
+            //调用收货地址的统计数量
+            counts = addressMapper.countAddressByUid(uid);
+            if (counts >= 20) {
+                throw new AddressCountLimitException("收货地址数量达到上限");
+            }
 
-        if (counts >= 20) {
-            throw new AddressCountLimitException("收货地址数量达到上限");
+            //uid,isDelete
+            address.setUid(uid);
+            Integer isDefault = counts == 0 ? 1 : 0;
+            address.setIsDefault(isDefault);
+
+
+            //补全四项日志
+            address.setCreatedTime(new Date());
+            address.setModifiedTime(new Date());
+            address.setModifiedUser(username);
+            address.setCreatedUser(username);
+
+            Integer rows = addressMapper.addAddress(address);
+            if (rows != 1) {
+                throw new InsertException("插入用户收货地址时出现未知异常");
+            }
         }
 
-        //uid,isDelete
-        address.setUid(uid);
-        Integer isDefault = counts == 0 ? 1 : 0;
-        address.setIsDefault(isDefault);
-
-
-        //补全四项日志
-        address.setCreatedTime(new Date());
-        address.setModifiedTime(new Date());
-        address.setModifiedUser(username);
-        address.setCreatedUser(username);
-
-        Integer rows = addressMapper.addAddress(address);
-        if (rows != 1) {
-            throw new InsertException("插入用户收货地址时出现未知异常");
-        }
     }
 
     @Override
@@ -78,28 +81,28 @@ public class AddressServiceImpl implements IAddressService {
             throw new AccessDeniedException("收货地址非法访问");
         }
         //如果用户的收货地址不止一条并且删除的这一条收货地址是默认收货地址，则自动将最近修改过的收货地址设置为收货地址
-        if (address.getIsDefault() == 1&&addressMapper.countAddressByUid(uid)!=1) {
+        if (address.getIsDefault() == 1 && addressMapper.countAddressByUid(uid) != 1) {
             addressMapper.deleteAddress(aid);
             if (addressMapper.findLastModified(uid).getAid() != null) {
                 addressMapper.setDefault(addressMapper.findLastModified(uid).getAid(), "系统自动设置", new Date());
             }
             return;
         }
-        Integer rows =  addressMapper.deleteAddress(aid);
-        if(rows<1){
+        Integer rows = addressMapper.deleteAddress(aid);
+        if (rows < 1) {
             throw new DeleteException("删除数据出现异常");
         }
     }
 
     @Override
-    public Address findByAid(Integer uid,Integer aid) {
+    public Address findByAid(Integer uid, Integer aid) {
         Address address = addressMapper.findByAid(aid);
 
-        if (address==null){
+        if (address == null) {
             throw new AddressNotFoundException("收货地址数据不存在");
         }
 
-        if (!address.getUid().equals(uid)){
+        if (!address.getUid().equals(uid)) {
             throw new AccessDeniedException("数据非法访问");
         }
         address.setProvinceCode(null);

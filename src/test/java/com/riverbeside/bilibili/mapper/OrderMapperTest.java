@@ -12,7 +12,7 @@ import java.util.Date;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class OrderMapperTest {
+public class   OrderMapperTest {
 
     @Autowired
     OrderMapper orderMapper;
