@@ -1,6 +1,7 @@
 package com.riverbeside.bilibili.controller;
 
 
+import com.riverbeside.bilibili.annotation.NoRepeatSubmit;
 import com.riverbeside.bilibili.entity.Address;
 import com.riverbeside.bilibili.service.IAddressService;
 import com.riverbeside.bilibili.util.JsonResult;
@@ -20,6 +21,7 @@ public class AddressController extends BaseController {
 
 
     @RequestMapping("addNewAddress")
+    @NoRepeatSubmit(timeout = 10)
     public JsonResult<Void> addNewAddress(HttpSession session, Address address) {
         Integer uid = getUidFromSession(session);
         String username = getUsernameFromSession(session);

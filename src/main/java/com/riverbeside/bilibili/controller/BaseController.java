@@ -43,7 +43,7 @@ public class BaseController {
             jsonResult.setMessage("购物车获取失败");
         }else if(e instanceof InsertException){
             jsonResult.setState(5000);
-            jsonResult.setMessage("注册时产生未知的异常");
+            jsonResult.setMessage("插入数据时产生未知的异常");
         }else if(e instanceof FileEmptyException){
             jsonResult.setState(6000);
             jsonResult.setMessage("文件是空文件");
