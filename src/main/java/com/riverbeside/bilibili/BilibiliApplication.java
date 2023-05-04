@@ -1,5 +1,6 @@
 package com.riverbeside.bilibili;
 
+
 import jakarta.servlet.MultipartConfigElement;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -9,9 +10,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
+//import springfox.documentation.oas.annotations.EnableOpenApi;
+
+//import javax.servlet.MultipartConfigElement;
+
 
 @SpringBootApplication
-//mapperscan注解 指定当前项目中的mapper接口的路径位置，在项目启动的时候会自动加载所有接口文件
+//@EnableOpenApi
+////mapperscan注解 指定当前项目中的mapper接口的路径位置，在项目启动的时候会自动加载所有接口文件
 @MapperScan("com/riverbeside/bilibili/mapper")
 @Configuration //表示配置类
 public class BilibiliApplication {
