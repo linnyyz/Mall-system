@@ -3,7 +3,6 @@ package com.riverbeside.bilibili.aop;
 
 import com.riverbeside.bilibili.annotation.NoRepeatSubmit;
 import com.riverbeside.bilibili.service.ex.InsertException;
-import com.riverbeside.bilibili.util.JsonResult;
 import com.riverbeside.bilibili.util.RedisUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
